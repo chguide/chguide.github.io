@@ -20,9 +20,26 @@
         margin: 0;
         padding: 0;
       }
+
+      #themeToggle {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        z-index: 99;
+      }
+
+      calcite-shell {
+        height: 100%;
+      }
     </style>
   </head>
   <body>
+    <!-- Dark Mode Toggle -->
+    <div id="themeToggle">
+      <calcite-switch id="darkModeSwitch" scale="l"></calcite-switch>
+      <label for="darkModeSwitch">Dark Mode</label>
+    </div>
+
     <calcite-shell content-behind>
       <calcite-shell-panel slot="primary-panel" position="start">
         <calcite-panel heading="Map Tools">
@@ -34,13 +51,17 @@
 
       <calcite-shell-panel slot="contextual-panel" position="end">
         <calcite-panel heading="Details">
-          <p>This is a sample ArcGIS + Calcite app.</p>
+          <p>This is a sample ArcGIS + Calcite app with search and dark mode.</p>
         </calcite-panel>
       </calcite-shell-panel>
     </calcite-shell>
 
     <script>
-      require(["esri/Map", "esri/views/MapView"], function (Map, MapView) {
+      require([
+        "esri/Map",
+        "esri/views/MapView",
+        "esri/widgets/Search"
+      ], function (Map, MapView, Search) {
         const map = new Map({
           basemap: "topo-vector"
         });
@@ -48,9 +69,18 @@
         const view = new MapView({
           container: "viewDiv",
           map: map,
-          center: [-63.5752, 44.6488], // Halifax, NS
+          center: [-63.5752, 44.6488],
           zoom: 10
         });
+
+        const searchWidget = new Search({ view });
+        view.ui.add(searchWidget, "top-right");
+      });
+
+      // Dark mode toggle
+      const switchEl = document.getElementById("darkModeSwitch");
+      switchEl.addEventListener("calciteSwitchChange", (event) => {
+        document.documentElement.classList.toggle("calcite-theme-dark", event.target.checked);
       });
     </script>
   </body>
