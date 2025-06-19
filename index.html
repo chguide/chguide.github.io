@@ -21,11 +21,22 @@
         padding: 0;
       }
 
+      #searchContainer {
+        position: absolute;
+        top: 10px;
+        left: 50%;
+        transform: translateX(-50%);
+        z-index: 99;
+      }
+
       #themeToggle {
         position: absolute;
         top: 10px;
         right: 10px;
         z-index: 99;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
       }
 
       calcite-shell {
@@ -34,6 +45,9 @@
     </style>
   </head>
   <body>
+    <!-- Search Widget Container -->
+    <div id="searchContainer"></div>
+
     <!-- Dark Mode Toggle -->
     <div id="themeToggle">
       <calcite-switch id="darkModeSwitch" scale="l"></calcite-switch>
@@ -74,7 +88,7 @@
         });
 
         const searchWidget = new Search({ view });
-        view.ui.add(searchWidget, "top-right");
+        searchWidget.container = "searchContainer";
       });
 
       // Dark mode toggle
