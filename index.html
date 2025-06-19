@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>ArcGIS Calcite Sample App</title>
+
+    <!-- Calcite Components -->
+    <script type="module" src="https://js.arcgis.com/calcite-components/3.2.1/calcite.esm.js"></script>
+    <link rel="stylesheet" href="https://js.arcgis.com/calcite-components/3.2.1/calcite.css" />
+
+    <!-- ArcGIS Maps SDK -->
+    <link rel="stylesheet" href="https://js.arcgis.com/4.29/esri/themes/light/main.css" />
+    <script src="https://js.arcgis.com/4.29/"></script>
+
+    <style>
+      html,
+      body,
+      #viewDiv {
+        height: 100%;
+        margin: 0;
+        padding: 0;
+      }
+    </style>
+  </head>
+  <body>
+    <calcite-shell content-behind>
+      <calcite-shell-panel slot="primary-panel" position="start">
+        <calcite-panel heading="Map Tools">
+          <calcite-button width="full" appearance="solid" color="blue">Example Tool</calcite-button>
+        </calcite-panel>
+      </calcite-shell-panel>
+
+      <div id="viewDiv"></div>
+
+      <calcite-shell-panel slot="contextual-panel" position="end">
+        <calcite-panel heading="Details">
+          <p>This is a sample ArcGIS + Calcite app.</p>
+        </calcite-panel>
+      </calcite-shell-panel>
+    </calcite-shell>
+
+    <script>
+      require(["esri/Map", "esri/views/MapView"], function (Map, MapView) {
+        const map = new Map({
+          basemap: "topo-vector"
+        });
+
+        const view = new MapView({
+          container: "viewDiv",
+          map: map,
+          center: [-63.5752, 44.6488], // Halifax, NS
+          zoom: 10
+        });
+      });
+    </script>
+  </body>
+</html>
