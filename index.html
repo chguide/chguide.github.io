@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <title>ArcGIS Calcite Sample App</title>
+    <title>ArcGIS Calcite 3D Scene with Weather</title>
 
     <!-- Calcite Components -->
     <script type="module" src="https://js.arcgis.com/calcite-components/3.2.1/calcite.esm.js"></script>
@@ -56,7 +56,7 @@
 
     <calcite-shell content-behind>
       <calcite-shell-panel slot="primary-panel" position="start">
-        <calcite-panel heading="Map Tools">
+        <calcite-panel heading="Scene Tools">
           <calcite-button width="full" appearance="solid" color="blue">Example Tool</calcite-button>
         </calcite-panel>
       </calcite-shell-panel>
@@ -65,7 +65,7 @@
 
       <calcite-shell-panel slot="contextual-panel" position="end">
         <calcite-panel heading="Details">
-          <p>This is a sample ArcGIS + Calcite app with search and dark mode.</p>
+          <p>This 3D scene includes buildings and a weather simulation tool.</p>
         </calcite-panel>
       </calcite-shell-panel>
     </calcite-shell>
@@ -73,22 +73,39 @@
     <script>
       require([
         "esri/Map",
-        "esri/views/MapView",
-        "esri/widgets/Search"
-      ], function (Map, MapView, Search) {
+        "esri/views/SceneView",
+        "esri/widgets/Search",
+        "esri/widgets/Weather"
+      ], function (Map, SceneView, Search, Weather) {
         const map = new Map({
-          basemap: "topo-vector"
+          basemap: "satellite",
+          ground: "world-elevation"
         });
 
-        const view = new MapView({
+        const view = new SceneView({
           container: "viewDiv",
           map: map,
-          center: [-63.5752, 44.6488],
-          zoom: 10
+          camera: {
+            position: {
+              longitude: -63.5752,
+              latitude: 44.6488,
+              z: 1500
+            },
+            tilt: 70
+          },
+          environment: {
+            lighting: {
+              directShadowsEnabled: true,
+              date: new Date()
+            }
+          }
         });
 
         const searchWidget = new Search({ view });
         searchWidget.container = "searchContainer";
+
+        const weatherWidget = new Weather({ view });
+        view.ui.add(weatherWidget, "top-right");
       });
 
       // Dark mode toggle
